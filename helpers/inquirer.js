@@ -89,7 +89,7 @@ const leerInput = async (message) => {
 const listadoTareasBorrar = async (tareas = []) => {
 
     const choices = tareas.map((tarea, i) => {
-        const iAux = `${i + 1}`.green;
+        const iAux = `${(i + 1) + '.'}`.green;
         return {
             value: tarea.id,
             name: `${iAux} ${tarea.desc}`
@@ -126,10 +126,35 @@ const confirmar = async (message) => {
     return ok;
 }
 
+const mostrarListadoCheckList = async (tareas = []) => {
+
+    const choices = tareas.map((tarea, i) => {
+        const iAux = `${(i + 1) + '.'}`.green;
+        return {
+            value: tarea.id,
+            name: `${iAux} ${tarea.desc}`,
+            checked: (tarea.completadoEn) ? true : false
+        };
+    });
+
+    const pregunta = [{
+        type: 'checkbox', //Devuelve un arreglo con todos los objetos a eliminar
+        name: 'ids',
+        message: 'Selecciones',
+        choices
+    }];
+
+    const { ids } = await inquirer.prompt(pregunta);
+    return ids;
+    // console.log(choices); //Obtenemos los datos para poder seleccionarlas
+}
+
+
 module.exports = {
     inquirerMenu,
     pausa,
     leerInput,
     listadoTareasBorrar,
-    confirmar
+    confirmar,
+    mostrarListadoCheckList
 }

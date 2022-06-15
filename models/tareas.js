@@ -87,7 +87,7 @@ class Tareas {
             const { desc, completadoEn } = tarea;
 
             const estado = (completadoEn)
-                ? 'Completada'.green
+                ? completadoEn.green
                 : 'Pendiente'.red;
 
             if (completadas) {
@@ -114,6 +114,20 @@ class Tareas {
     }
 
 
+    toggleCompletadas(ids = []) {
+        ids.forEach(id => {
+            const tarea = this._listado[id];
+            if (!tarea.completadoEn) {
+                tarea.completadoEn = new Date().toISOString();
+            }
+        });
+
+        this.listadoArr.forEach(tarea => {
+            if (!ids.includes(tarea.id)) { //Si no el arreglo existe esta propiedad
+                this._listado[tarea.id].completadoEn = null;
+            }
+        });
+    }
 
 }
 

@@ -5,7 +5,8 @@ const {
     pausa,
     leerInput,
     listadoTareasBorrar,
-    confirmar
+    confirmar,
+    mostrarListadoCheckList
 } = require('./helpers/inquirer'); //Inquirer permite manipular la consola con las teclas flecha
 const Tarea = require('./models/tarea');
 const Tareas = require('./models/tareas');
@@ -37,15 +38,18 @@ const main = async () => {
                 tareas.listadoCompleto();
                 //console.log(tareas.listadoArr);
                 break;
-            case '3': // Listar tareas completas
-                console.log('Completa');
+            case '3': // Listar tareas completadas
+                //console.log('Completa');
                 tareas.listarPendientesCompletadas(true);
                 break;
             case '4': // Listar tareas pendientes
-                console.log('Pendiente');
+                //console.log('Pendiente');
                 tareas.listarPendientesCompletadas(false);
                 break;
             case '5': // Completar tareas
+                const ids = await mostrarListadoCheckList(tareas.listadoArr);
+                tareas.toggleCompletadas(ids);
+                //console.log(ids);
                 break;
             case '6': // Borrar tareas
                 const id = await listadoTareasBorrar(tareas.listadoArr);
