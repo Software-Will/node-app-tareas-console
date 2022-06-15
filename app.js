@@ -3,7 +3,9 @@ const { guardarDB, leerDB } = require('./helpers/guardarArchivo');
 const {
     inquirerMenu,
     pausa,
-    leerInput
+    leerInput,
+    listadoTareasBorrar,
+    confirmar
 } = require('./helpers/inquirer'); //Inquirer permite manipular la consola con las teclas flecha
 const Tarea = require('./models/tarea');
 const Tareas = require('./models/tareas');
@@ -46,13 +48,19 @@ const main = async () => {
             case '5': // Completar tareas
                 break;
             case '6': // Borrar tareas
+                const id = await listadoTareasBorrar(tareas.listadoArr);
+                if (id !== '0') {
+                    const ok = await confirmar('¿Está seguro?');
+                    if (ok) {
+                        tareas.borrarTarea(id);
+                        console.log('Tarea Borrada');
+                    }
+                    //console.log({ ok });
+                }
                 break;
         }
-
         guardarDB(tareas.listadoArr);
-
-        await pausa();
-        //if (op !== '0') await pausa(); //Si es 0 termina el programa
+        await pausa(); //Mensaje del ENTER
     } while (op !== '0');
 }
 

@@ -86,8 +86,50 @@ const leerInput = async (message) => {
     return desc;
 }
 
+const listadoTareasBorrar = async (tareas = []) => {
+
+    const choices = tareas.map((tarea, i) => {
+        const iAux = `${i + 1}`.green;
+        return {
+            value: tarea.id,
+            name: `${iAux} ${tarea.desc}`
+        };
+    });
+
+    choices.unshift({
+        value: '0',
+        name: `${'0.'.green} Cancelar`
+    });
+
+
+    const preguntas = [{
+        type: 'list',
+        name: 'id',
+        message: 'Borrar',
+        choices
+    }];
+
+    const { id } = await inquirer.prompt(preguntas);
+    return id;
+    // console.log(choices); //Obtenemos los datos para poder seleccionarlas
+}
+
+const confirmar = async (message) => {
+    const question = [ //confirm regresa un valor boolean
+        {
+            type: 'confirm',
+            name: 'ok',
+            message
+        }
+    ];
+    const { ok } = await inquirer.prompt(question);
+    return ok;
+}
+
 module.exports = {
     inquirerMenu,
     pausa,
-    leerInput
+    leerInput,
+    listadoTareasBorrar,
+    confirmar
 }
